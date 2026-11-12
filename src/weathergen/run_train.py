@@ -13,10 +13,8 @@ The entry point for training and inference weathergen-atmo
 
 import logging
 import os
-import pdb
 import sys
 import time
-import traceback
 from pathlib import Path
 
 import weathergen.common.config as config
@@ -109,13 +107,7 @@ def run_inference(args):
     cf.general.run_history += [(args.from_run_id, cf.general.istep)]
 
     trainer = Trainer(cf.train_logging)
-    try:
-        trainer.inference(cf, devices, args.from_run_id, args.mini_epoch)
-    except Exception:
-        extype, value, tb = sys.exc_info()
-        traceback.print_exc()
-        if cf.world_size == 1:
-            pdb.post_mortem(tb)
+    trainer.inference(cf, devices, args.from_run_id, args.mini_epoch)
 
 
 def run_continue(args):
@@ -149,13 +141,7 @@ def run_continue(args):
 
     trainer = Trainer(cf.train_logging)
 
-    try:
-        trainer.run(cf, devices, args.from_run_id, args.mini_epoch)
-    except Exception:
-        extype, value, tb = sys.exc_info()
-        traceback.print_exc()
-        if cf.world_size == 1:
-            pdb.post_mortem(tb)
+    trainer.run(cf, devices, args.from_run_id, args.mini_epoch)
 
 
 def run_train(args):
@@ -189,13 +175,7 @@ def run_train(args):
 
     trainer = Trainer(cf.train_logging)
 
-    try:
-        trainer.run(cf, devices)
-    except Exception:
-        extype, value, tb = sys.exc_info()
-        traceback.print_exc()
-        if cf.world_size == 1:
-            pdb.post_mortem(tb)
+    trainer.run(cf, devices)
 
 
 if __name__ == "__main__":
